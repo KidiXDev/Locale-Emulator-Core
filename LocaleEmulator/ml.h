@@ -34025,7 +34025,6 @@ inline PVOID SearchStringReference(PLDR_MODULE Module, PVOID String, ULONG_PTR S
 
 _ML_CPP_TAIL_
 
-#endif // CPP_DEFINED
 
 #endif // _SEARCHPATTERN_H_214862b7_e205_40fb_ba78_ccfbe9d04321_
 
