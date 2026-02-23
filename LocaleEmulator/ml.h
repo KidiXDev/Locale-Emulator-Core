@@ -9957,35 +9957,35 @@ long            __cdecl _InterlockedExchangeAdd(long volatile * Addend, long Val
 long            __cdecl _InterlockedExchange(volatile long * Target, long Value);
 char            __cdecl _InterlockedExchange8(char volatile *Destination, char ExChange);
 
-long            __cdecl _InterlockedAnd(long volatile *Destination, long Value);
-long            __cdecl _InterlockedOr(long volatile *Destination, long Value);
-long            __cdecl _InterlockedXor(long volatile *Destination, long Value);
+long            _InterlockedAnd(long volatile *Destination, long Value);
+long            _InterlockedOr(long volatile *Destination, long Value);
+long            _InterlockedXor(long volatile *Destination, long Value);
 
 long            __cdecl _InterlockedIncrement_acq(long * lpAddend);
 long            __cdecl _InterlockedIncrement_rel(long * lpAddend);
-short           __cdecl _InterlockedIncrement16(short volatile * lpAddend);
+short           _InterlockedIncrement16(short volatile * lpAddend);
 short           __cdecl _InterlockedIncrement16_acq(short * lpAddend);
 short           __cdecl _InterlockedIncrement16_rel(short * lpAddend);
-__int64         __cdecl _InterlockedIncrement64(volatile __int64 * lpAddend);
+__int64         _InterlockedIncrement64(volatile __int64 * lpAddend);
 __int64         __cdecl _InterlockedIncrement64_acq(volatile __int64 * lpAddend);
 __int64         __cdecl _InterlockedIncrement64_rel(volatile __int64 * lpAddend);
 
 long            __cdecl _InterlockedDecrement_acq(long * lpAddend);
 long            __cdecl _InterlockedDecrement_acq(long * lpAddend);
-short           __cdecl _InterlockedDecrement16(short volatile * lpAddend);
+short           _InterlockedDecrement16(short volatile * lpAddend);
 short           __cdecl _InterlockedDecrement16_acq(short * lpAddend);
 short           __cdecl _InterlockedDecrement16_rel(short * lpAddend);
-__int64         __cdecl _InterlockedDecrement64(volatile __int64 * lpAddend);
+__int64         _InterlockedDecrement64(volatile __int64 * lpAddend);
 __int64         __cdecl _InterlockedDecrement64_acq(__int64 * lpAddend);
 __int64         __cdecl _InterlockedDecrement64_rel(__int64 * lpAddend);
 
 long            __cdecl _InterlockedExchange_acq(long * Target, long Value);
-__int64         __cdecl _InterlockedExchange64(volatile __int64 * Target, __int64 Value);
+__int64         _InterlockedExchange64(volatile __int64 * Target, __int64 Value);
 __int64         __cdecl _InterlockedExchange64_acq(__int64 * Target, __int64 Value);
 
 long            __cdecl _InterlockedCompareExchange_acq(long volatile * Destination, long Exchange, long Comperand);
 long            __cdecl _InterlockedCompareExchange_rel(long volatile * Destination, long Exchange, long Comperand);
-short                   __cdecl _InterlockedCompareExchange16(short volatile * Destination, short Exchange, short Comperand);
+short                   _InterlockedCompareExchange16(short volatile * Destination, short Exchange, short Comperand);
 short           __cdecl _InterlockedCompareExchange16_acq(short volatile * Destination, short Exchange, short Comperand);
 short           __cdecl _InterlockedCompareExchange16_rel(short volatile * Destination, short Exchange, short Comperand);
 __int64         __cdecl _InterlockedCompareExchange64(__int64 volatile * Destination, __int64 Exchange, __int64 Comperand);
@@ -10100,8 +10100,8 @@ void          __vmx_vmptrst(unsigned __int64 *VmcsPhysicalAddress);
 #else
 
     #define _InterlockedCompareExchangePointer(Target, Exchange, Comperand) (PVOID)_InterlockedCompareExchange64((__int64 *)Target, (__int64)Exchange, (__int64)Comperand)
-    void * __cdecl _InterlockedExchangePointer(void * volatile * Target, void * Value);
-    void * __cdecl _InterlockedExchangePointer_acq(void * volatile * Target, void * Value);
+    void * _InterlockedExchangePointer(void * volatile * Target, void * Value);
+    void * _InterlockedExchangePointer_acq(void * volatile * Target, void * Value);
 
 #endif
 
@@ -33992,6 +33992,7 @@ inline PVOID SearchStringReference(PLDR_MODULE Module, PVOID String, ULONG_PTR S
 
 _ML_CPP_TAIL_
 
+#endif // CPP_DEFINED
 
 #endif // _SEARCHPATTERN_H_214862b7_e205_40fb_ba78_ccfbe9d04321_
 
