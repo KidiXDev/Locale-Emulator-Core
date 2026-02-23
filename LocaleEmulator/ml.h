@@ -9955,10 +9955,7 @@ long            __cdecl _InterlockedDecrement(long volatile * lpAddend);
 long            __cdecl _InterlockedCompareExchange(long volatile * Destination, long Exchange, long Comperand);
 long            __cdecl _InterlockedExchangeAdd(long volatile * Addend, long Value);
 long            __cdecl _InterlockedExchange(volatile long * Target, long Value);
-IF_NOT_EXIST(_InterlockedExchange8)
-{
-    char            __cdecl _InterlockedExchange8(char volatile *Destination, char ExChange);
-}
+char            __cdecl _InterlockedExchange8(char volatile *Destination, char ExChange);
 
 long            __cdecl _InterlockedAnd(long volatile *Destination, long Value);
 long            __cdecl _InterlockedOr(long volatile *Destination, long Value);
@@ -9991,10 +9988,7 @@ long            __cdecl _InterlockedCompareExchange_rel(long volatile * Destinat
 short                   __cdecl _InterlockedCompareExchange16(short volatile * Destination, short Exchange, short Comperand);
 short           __cdecl _InterlockedCompareExchange16_acq(short volatile * Destination, short Exchange, short Comperand);
 short           __cdecl _InterlockedCompareExchange16_rel(short volatile * Destination, short Exchange, short Comperand);
-IF_NOT_EXIST(_InterlockedCompareExchange64)
-{
-    __int64         __cdecl _InterlockedCompareExchange64(__int64 volatile * Destination, __int64 Exchange, __int64 Comperand);
-}
+__int64         __cdecl _InterlockedCompareExchange64(__int64 volatile * Destination, __int64 Exchange, __int64 Comperand);
 __int64         __cdecl _InterlockedCompareExchange64_acq(__int64 volatile * Destination, __int64 Exchange, __int64 Comperand);
 __int64         __cdecl _InterlockedCompareExchange64_rel(__int64 volatile * Destination, __int64 Exchange, __int64 Comperand);
 unsigned char   __cdecl _InterlockedCompareExchange128(__int64 volatile * Destination, __int64 ExchangeHigh, __int64 ExchangeLow, __int64 * Comparand);
@@ -10089,19 +10083,16 @@ void          __vmx_vmptrst(unsigned __int64 *VmcsPhysicalAddress);
 
     #if ML_USER_MODE
 
-    IF_NOT_EXIST(_InterlockedExchange64)
+    inline long long _InterlockedExchange64(long long volatile *Target, long long Value)
     {
-        inline long long __cdecl _InterlockedExchange64(long long volatile *Target, long long Value)
+        long long Old;
+
+        do
         {
-            long long Old;
+            Old = *Target;
+        } while (_InterlockedCompareExchange64(Target, Value, Old) != Old);
 
-            do
-            {
-                Old = *Target;
-            } while (_InterlockedCompareExchange64(Target, Value, Old) != Old);
-
-            return Old;
-        }
+        return Old;
     }
 
     #endif // r3
@@ -12449,7 +12440,7 @@ KiUserExceptionDispatcher(
 );
 
 NATIVE_API
-VOID
+NTSTATUS
 NTAPI
 RtlRaiseException(
     PEXCEPTION_RECORD ExceptionRecord
@@ -21297,34 +21288,10 @@ RtlCaptureStackBackTrace(
 );
 
 #endif // _NTRTL_H_0fd28a55_9a32_4533_8006_a0469dd77ef2_
-#ifndef _NTNLS_
-#define _NTNLS_
+#ifndef _NTNLS_H_66774c20_dc28_4a7e_9714_c1f39fdb5d5f_
+#define _NTNLS_H_66774c20_dc28_4a7e_9714_c1f39fdb5d5f_
 
-#define MAXIMUM_LEADBYTES   12
-
-typedef struct _CPTABLEINFO {
-    USHORT CodePage;                    // code page number
-    USHORT MaximumCharacterSize;        // max length (bytes) of a char
-    USHORT DefaultChar;                 // default character (MB)
-    USHORT UniDefaultChar;              // default character (Unicode)
-    USHORT TransDefaultChar;            // translation of default char (Unicode)
-    USHORT TransUniDefaultChar;         // translation of Unic default char (MB)
-    USHORT DBCSCodePage;                // Non 0 for DBCS code pages
-    UCHAR  LeadByte[MAXIMUM_LEADBYTES]; // lead byte ranges
-    PUSHORT MultiByteTable;             // pointer to MB translation table
-    PVOID   WideCharTable;              // pointer to WC translation table
-    PUSHORT DBCSRanges;                 // pointer to DBCS ranges
-    PUSHORT DBCSOffsets;                // pointer to DBCS offsets
-} CPTABLEINFO, *PCPTABLEINFO;
-
-typedef struct _NLSTABLEINFO {
-    CPTABLEINFO OemTableInfo;
-    CPTABLEINFO AnsiTableInfo;
-    PUSHORT UpperCaseTable;             // 844 format upcase table
-    PUSHORT LowerCaseTable;             // 844 format lower case table
-} NLSTABLEINFO, *PNLSTABLEINFO;
-
-#endif // _NTNLS_
+#include <ntnls.h>
 
 NATIVE_API
 VOID
